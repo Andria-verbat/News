@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">News</string>
+    <string name="apply_filter">Apply Filter</string>
+</resources>
