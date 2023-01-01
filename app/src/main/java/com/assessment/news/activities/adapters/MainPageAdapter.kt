@@ -32,4 +32,23 @@ class MainPageAdapter : RecyclerView.Adapter<MainPageAdapter.ViewHolder>() {
     }
     override fun getItemCount(): Int {
         return mainList.size
-    }}
+    }
+ fun filter(newList: ArrayList<MainContent>, filter: String){
+     var filteredList= ArrayList<MainContent>()
+     if(filter=="Select"){
+
+     }else{
+         for(i in newList.indices){
+             if(filter==newList.get(i).type){
+                 filteredList.add(newList.get(i))
+             }
+         }
+         mainList=filteredList
+         notifyDataSetChanged()
+
+     }
+
+
+ }
+
+}

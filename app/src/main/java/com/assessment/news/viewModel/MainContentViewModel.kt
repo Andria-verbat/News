@@ -64,6 +64,7 @@ class MainContentViewModel(app: Application) : AndroidViewModel(app) {
 
     fun getFilterData(newsData: List<MainContent>): List<String>{
         val newList = arrayListOf<String>()
+        newList.add("Select")
         for(i in newsData.indices){
             newList.add(newsData.get(i).type!!)
 
