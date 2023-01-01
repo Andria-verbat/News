@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
    {
     private lateinit var binding : ActivityMainBinding
     private lateinit var viewModel: MainContentViewModel
-    private lateinit var movieAdapter : MainPageAdapter
+    private lateinit var newsAdapter : MainPageAdapter
        var newFilterList = listOf<String>()
        private var newList = ArrayList<MainContent>()
 
@@ -40,17 +40,17 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
 
         prepareRecyclerView()
         viewModel = ViewModelProvider(this)[MainContentViewModel::class.java]
-        viewModel.getPopularMovies()
-        viewModel.observeMovieLiveData().observe(this, Observer { movieList ->
-            newList= movieList as ArrayList<MainContent>
-            movieAdapter.setNewsList(movieList)
+        viewModel.getNews()
+        viewModel.observeNewsLiveData().observe(this, Observer { newsList ->
+            newList= newsList as ArrayList<MainContent>
+            newsAdapter.setNewsList(newsList)
         })
 
         viewModel.observeFilterList().observe(this, Observer { filterList ->
             newFilterList= filterList
             val adapter = ArrayAdapter(
                 this,
-                android.R.layout.simple_spinner_item, filterList
+                android.R.layout.simple_spinner_dropdown_item, filterList
             )
             binding.ivFilter.adapter = adapter
         })
@@ -64,23 +64,19 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
                 parent: AdapterView<*>,
                 view: View, position: Int, id: Long
             ) {
-
-                /*Toast.makeText(this@MainActivity,
-                            "" + newFilterList[position], Toast.LENGTH_SHORT).show()*/
-                movieAdapter.filter(newList,newFilterList[position])
+                newsAdapter.filter(newList,newFilterList[position])
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // write code to perform some action
-            }
+                           }
 
         }
     }
         private fun prepareRecyclerView() {
-            movieAdapter = MainPageAdapter()
+            newsAdapter = MainPageAdapter()
             binding.recyclerView.apply {
                 layoutManager = GridLayoutManager(applicationContext, 1)
-                adapter = movieAdapter
+                adapter = newsAdapter
             }
         }
 

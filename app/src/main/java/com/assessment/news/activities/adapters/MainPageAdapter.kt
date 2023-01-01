@@ -10,11 +10,14 @@ import com.bumptech.glide.Glide
 
 class MainPageAdapter : RecyclerView.Adapter<MainPageAdapter.ViewHolder>() {
     private var mainList = ArrayList<MainContent>()
-    fun setNewsList(newsList : List<MainContent>){
+    fun setNewsList(newsList: List<MainContent>) {
         this.mainList = newsList as ArrayList<MainContent>
         notifyDataSetChanged()
     }
-    class ViewHolder(val binding : MainRecyclerviewElementBinding) : RecyclerView.ViewHolder(binding.root)  {}
+
+    class ViewHolder(val binding: MainRecyclerviewElementBinding) :
+        RecyclerView.ViewHolder(binding.root) {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             MainRecyclerviewElementBinding.inflate(
@@ -24,31 +27,38 @@ class MainPageAdapter : RecyclerView.Adapter<MainPageAdapter.ViewHolder>() {
             )
         )
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Glide.with(holder.itemView)
             .load(mainList[position].images.square_140)
             .into(holder.binding.newsImage)
-        holder.binding.newsHeadline.text = mainList[position].readablePublishedAt?.substring(0,11)+": "+mainList[position].title
+        holder.binding.newsHeadline.text = mainList[position].readablePublishedAt?.substring(
+            0,
+            11
+        ) + ": " + mainList[position].title
     }
+
     override fun getItemCount(): Int {
         return mainList.size
     }
- fun filter(newList: ArrayList<MainContent>, filter: String){
-     var filteredList= ArrayList<MainContent>()
-     if(filter=="Select"){
 
-     }else{
-         for(i in newList.indices){
-             if(filter==newList.get(i).type){
-                 filteredList.add(newList.get(i))
-             }
-         }
-         mainList=filteredList
-         notifyDataSetChanged()
+    fun filter(newList: ArrayList<MainContent>, filter: String) {
+        var filteredList = ArrayList<MainContent>()
+        if (filter == "Select") {
+            mainList = newList
+            notifyDataSetChanged()
+        } else {
+            for (i in newList.indices) {
+                if (filter == newList.get(i).type) {
+                    filteredList.add(newList.get(i))
+                }
+            }
+            mainList = filteredList
+            notifyDataSetChanged()
 
-     }
+        }
 
 
- }
+    }
 
 }

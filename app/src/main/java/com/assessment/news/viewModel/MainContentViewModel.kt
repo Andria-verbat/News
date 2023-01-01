@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 class MainContentViewModel(app: Application) : AndroidViewModel(app) {
     private var noteDao: NewsDao
     private val database = NewsDatabase.getInstance(app)
-    private var movieLiveData = MutableLiveData<List<MainContent>>()
+    private var newsLiveData = MutableLiveData<List<MainContent>>()
     private var filterList = MutableLiveData<List<String>>()
 
 
@@ -23,52 +23,46 @@ class MainContentViewModel(app: Application) : AndroidViewModel(app) {
         noteDao = database.newsDao()
     }
 
-    fun getPopularMovies() {
-
+    fun getNews() {
         val quotesApi = RetrofitHelper.getInstance().create(RetrofitInterface::class.java)
         subscribeOnBackground {
-
-            movieLiveData.postValue(noteDao.getAllNews())
+            newsLiveData.postValue(noteDao.getAllNews())
         }
 
 
         GlobalScope.launch {
             val result = quotesApi.getQuotes()
             noteDao.delete()
-            for(i in result.body()?.indices!!){
+            for (i in result.body()?.indices!!) {
                 insert(result.body()!![i])
             }
-            movieLiveData.postValue(result.body())
+            newsLiveData.postValue(result.body())
             filterList.postValue(getFilterData(result.body()!!))
-
         }
-
-
     }
 
-    fun observeMovieLiveData(): LiveData<List<MainContent>> {
-        return movieLiveData
+    fun observeNewsLiveData(): LiveData<List<MainContent>> {
+        return newsLiveData
     }
-
 
     fun observeFilterList(): LiveData<List<String>> {
         return filterList
     }
 
     fun insert(note: MainContent) {
-       subscribeOnBackground {
+        subscribeOnBackground {
             noteDao.insertAll(note)
-       }
+        }
     }
 
-
-    fun getFilterData(newsData: List<MainContent>): List<String>{
+    fun getFilterData(newsData: List<MainContent>): List<String> {
         val newList = arrayListOf<String>()
+        var newList1 = arrayListOf<String>()
         newList.add("Select")
-        for(i in newsData.indices){
+        for (i in newsData.indices) {
             newList.add(newsData.get(i).type!!)
-
         }
-        return newList
+        newList1 = newList.distinct().toList() as ArrayList<String>
+        return newList1
     }
 }
