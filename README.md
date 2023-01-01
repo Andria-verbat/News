@@ -3,7 +3,7 @@
 
 News App
 
-This application shows a list of news headlines along with an image. Also, there is a filter option to view the news based on a particular category.
+This application shows a list of news headlines along with an image. Also, there is a filter option to view the news based on a particular category. The filter option is provided as a dropdown menu.
 
 ### Built With
 
