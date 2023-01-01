@@ -25,15 +25,23 @@ class MainContentViewModel(app: Application) : AndroidViewModel(app) {
     fun getPopularMovies() {
 
         val quotesApi = RetrofitHelper.getInstance().create(RetrofitInterface::class.java)
+        subscribeOnBackground {
+
+            movieLiveData.postValue(noteDao.getAllNews())
+        }
+
 
         GlobalScope.launch {
             val result = quotesApi.getQuotes()
+            noteDao.delete()
             for(i in result.body()?.indices!!){
                 insert(result.body()!![i])
             }
             movieLiveData.postValue(result.body())
 
         }
+
+
     }
 
     fun observeMovieLiveData(): LiveData<List<MainContent>> {
