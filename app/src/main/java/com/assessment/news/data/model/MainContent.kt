@@ -8,7 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 @Entity(tableName = "news_table")
-data class MainContent (
+data class MainContent(
     @PrimaryKey
     val id: Int,
     val title: String?,
@@ -27,17 +27,14 @@ data class MainContent (
     @TypeConverters(ImagesConverters::class)
     val images: Images,
     val language: String?
-        )
+)
 
 
-public class ImagesConverters {
-
+class ImagesConverters {
     @TypeConverter
     fun fromImagesJson(stat: Images): String {
         return Gson().toJson(stat)
     }
-
-
 
     @TypeConverter
     fun toImagesList(jsonImages: String): Images {

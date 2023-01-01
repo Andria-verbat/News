@@ -20,25 +20,6 @@ class MainContentViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         noteDao = database.newsDao()
-
-        /*insert(
-            MainContent(
-                45, "fdgd",
-                "fdgd",
-                "fdgd",
-                "fdgd",
-                "fdgd",
-                456,
-                "fdgd",
-                4353,
-                "fdgd",
-                "fdgd", true,
-                true,
-                "fdgd",
-                "fdgd",
-                "fdgd"
-            )
-        )*/
     }
 
     fun getPopularMovies() {
