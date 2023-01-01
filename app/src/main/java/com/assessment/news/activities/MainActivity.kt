@@ -34,7 +34,10 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        registerReceiver(
+            ConnectivityReceiver(),
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+        )
 
         prepareRecyclerView()
         viewModel = ViewModelProvider(this)[MainContentViewModel::class.java]
@@ -43,36 +46,60 @@ class MainActivity : AppCompatActivity(), ConnectivityReceiver.ConnectivityRecei
             movieAdapter.setNewsList(movieList)
         })
 
+        viewModel.observeFilterList().observe(this, Observer { filterList ->
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item, filterList
+            )
+            binding.ivFilter.adapter = adapter
+        })
 
-    }
 
-    private fun prepareRecyclerView() {
-        movieAdapter = MainPageAdapter()
-        binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(applicationContext,1)
-            adapter = movieAdapter
+
+
+        binding.ivFilter.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View, position: Int, id: Long
+            ) {
+                Toast.makeText(this@MainActivity,
+                            "" + languages[position], Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+
         }
     }
-
-    override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        showNetworkMessage(isConnected)
-    }
-
-    private fun showNetworkMessage(isConnected: Boolean) {
-        if (!isConnected) {
-
-            binding.toolbar.setBackgroundColor(resources.getColor(R.color.no_internet))
-            binding.txtNews.text="No Internet Connection Available"
-        } else {
-            binding.toolbar.setBackgroundColor(resources.getColor(R.color.toolbarColor))
-            binding.txtNews.text="News"
+        private fun prepareRecyclerView() {
+            movieAdapter = MainPageAdapter()
+            binding.recyclerView.apply {
+                layoutManager = GridLayoutManager(applicationContext, 1)
+                adapter = movieAdapter
+            }
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        ConnectivityReceiver.connectivityReceiverListener = this
-    }
+        override fun onNetworkConnectionChanged(isConnected: Boolean) {
+            showNetworkMessage(isConnected)
+        }
+
+        private fun showNetworkMessage(isConnected: Boolean) {
+            if (!isConnected) {
+
+                binding.toolbar.setBackgroundColor(resources.getColor(R.color.no_internet))
+                binding.txtNews.text = "No Internet Connection Available"
+            } else {
+                binding.toolbar.setBackgroundColor(resources.getColor(R.color.toolbarColor))
+                binding.txtNews.text = "News"
+            }
+        }
+
+        override fun onResume() {
+            super.onResume()
+            ConnectivityReceiver.connectivityReceiverListener = this
+        }
 
 
 
