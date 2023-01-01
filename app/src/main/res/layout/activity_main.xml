@@ -27,17 +27,18 @@
                 android:layout_marginStart="4dp"
                 android:layout_weight="0.8"
                 android:text="@string/app_name"
+                android:id="@+id/txt_news"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <ImageView
+            <Spinner
                 android:id="@+id/iv_filter"
                 android:layout_width="0dp"
                 android:layout_height="24dp"
                 android:layout_gravity="end"
                 android:layout_weight="0.2"
-                android:src="@drawable/ic_baseline_filter_alt_24"
+
                 tools:ignore="contentDescription" />
         </LinearLayout>
 
