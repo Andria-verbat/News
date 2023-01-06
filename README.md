@@ -7,6 +7,7 @@ This application shows a list of news headlines along with an image. Also, there
 
 ### Built With
 
+
 The News app is developed with the following:-
 
 * Kotlin
